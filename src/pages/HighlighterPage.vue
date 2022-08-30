@@ -7,7 +7,7 @@
     </div>
 
     <div style="padding-top: 20px;">
-      case sensitive? <input v-model="checkInput" type="checkbox" data-testid="case-sensitive" @click="showText()" />
+      case sensitive? <input v-model="checkInput" type="checkbox" data-testid="case-sensitive" @click="toggle()" />
     </div>
 
     <div data-testid="result" id="paragraph">
@@ -27,6 +27,11 @@ export default defineComponent({
     const searchInput = ref('')
     const checkInput = ref(false)
 
+    const toggle = () => {
+      checkInput.value = !checkInput.value
+      showText()
+    }
+
     const showText = () => {
 
       const textToSearch = ref(document.getElementById("text-to-search").value)
@@ -41,7 +46,6 @@ export default defineComponent({
         pattern.value = new RegExp(`${textToSearch.value}`, "gi")
         return paragraph.value.innerHTML = paragraph.value.textContent.replace(pattern.value, match => `<mark>${match}</mark>`)
       } else {
-        checkInput.value = false
         pattern.value = new RegExp(`${textToSearch.value}`, "g")
         return paragraph.value.innerHTML = paragraph.value.textContent.replace(pattern.value, match => `<mark>${match}</mark>`)
       }
@@ -51,7 +55,8 @@ export default defineComponent({
       textInput,
       searchInput,
       checkInput,
-      showText
+      showText,
+      toggle
     }
   },
 })
